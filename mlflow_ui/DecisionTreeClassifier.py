@@ -124,5 +124,5 @@ if __name__ == '__main__':
     parser.add_argument('--n_estimators', '-n', type=int, default=100)
     parser.add_argument('--max_depth', '-d', type=int, default=10)
     args = parser.parse_args()
-
+    
     main( max_depth=args.max_depth)
