@@ -19,7 +19,7 @@ data = [
   ]
 ]
 
-logged_model = 'runs:/57e23e3b1c414ee38498ddee565cf5c3/DecisionTreeClassifier/with-SMOTE'
+logged_model = 'runs:/e2b2ddd9b9694e9faf2cc30f089a544a/DecisionTreeClassifier/with-class-weights'
 loaded_model = mlflow.pyfunc.load_model(logged_model)
 
 columns = [
