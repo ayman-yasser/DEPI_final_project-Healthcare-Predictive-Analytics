@@ -1,0 +1,24 @@
+name: treatment-prediction
+
+entry_points:
+  forest:
+    parameters:
+      n_estimators: { type: int, default: 100 }
+      max_depth: { type: int, default: 10 }
+    command: "python forest_script.py -n {n_estimators} -d {max_depth}"
+
+  decision_tree:
+    parameters:
+      max_depth: { type: int, default: 10 }
+    command: "python DecisionTreeClassifier.py -d {max_depth}"
+
+  logistic:
+    parameters:
+      c: { type: float, default: 2.5 }
+      penalty: { type: str, default: "l2" }
+    command: "python logistic_script.py -c {c} -p {penalty}"
+
+    # Regularization strength:
+    # C = 1.0 → default value in scikit-learn
+    # C = 0.1 → strong regularization → simpler model, less risk of overfitting
+    # C = 10  → weak regularization → more flexible model, higher risk of overfitting
