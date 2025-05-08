@@ -15,6 +15,7 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
+
 # --------------------- Data Preparation ----------------------------
 
 
@@ -22,7 +23,7 @@ warnings.filterwarnings('ignore')
 TRAIN_PATH = os.path.join(os.getcwd(), 'health_care_processed2.csv')
 df = pd.read_csv(TRAIN_PATH)
 
-x = df[['mental_health_score','medication','exercise_per_week','age','bmi','liver_function','blood_sugar','smoker','diabetes','diagnosis','hospital_stay_days','hospital_visits']]
+x = df[['mental_health_score','exercise_per_week','age','bmi','liver_function','blood_sugar','hospital_stay_days','hospital_visits','medication','smoker','diabetes','diagnosis']]
 y = df['treatment_outcome']
 
 # Split the data into training and testing sets
