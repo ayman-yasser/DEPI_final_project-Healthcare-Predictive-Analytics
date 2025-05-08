@@ -1,3 +1,4 @@
+#app.py
 import streamlit as st
 import mlflow
 import pandas as pd
@@ -14,21 +15,51 @@ columns = [
 ]
 
 # User interface setup
-st.title("Treatment Outcome Prediction")
+st.title("💊 Treatment Outcome Prediction")
+
+# Sidebar ABOUT the app
+st.sidebar.title("ℹ️ About")
+st.sidebar.markdown("""
+This app uses a machine learning model to predict the outcome of a treatment based on user inputs.
+                    
+**-Model**: Decision Tree  
+**-Technique**: SMOTE for class balancing  
+**-Platform**: Streamlit + MLflow  
+""")
+
+ #CSS
+st.markdown("""
+    <style>
+        .stApp {
+            background-color: #0e1117;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .stButton>button {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            padding: 0.5em 2em;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Add user inputs for the features
-mental_health_score = st.number_input('Mental Health Score', min_value=0.0, max_value=10.0, value=4.5, step=0.1)
-medication = st.selectbox('Medication', ['No Drug','Lisinopril', 'Statins', 'Metformin', 'Beta Blockers'], index=0)
-exercise_per_week = st.number_input('Exercise per Week (Hours)', min_value=0.0, max_value=10.0, value=3.5, step=0.1)
-age = st.number_input('Age', min_value=0, max_value=100, value=45, step=1)
-bmi = st.number_input('BMI', min_value=10.0, max_value=50.0, value=29.8, step=0.1)
-liver_function = st.number_input('Liver Function', min_value=0.0, max_value=10.0, value=6.3, step=0.1)
-blood_sugar = st.number_input('Blood Sugar Level', min_value=50.0, max_value=200.0, value=90.5, step=0.1)
-smoker = st.selectbox('Smoker', ['No', 'Yes'], index=0)
-diabetes = st.selectbox('Diabetes', ['No', 'Yes'], index=0)
-diagnosis = st.selectbox('Diagnosis', ['Liver Disease', 'Healthy', 'Kidney Disease', 'Heart Disease', 'Diabetes', 'Hypertension'], index=0)
-hospital_stay_days = st.number_input('Hospital Stay Days', min_value=0, max_value=100, value=3, step=1)
-hospital_visits = st.number_input('Hospital Visits', min_value=0, max_value=100, value=4, step=1)
+mental_health_score = st.number_input('🧠Mental Health Score', min_value=0.0, max_value=10.0, value=4.5, step=0.1)
+medication = st.selectbox('💊Medication', ['No Drug','Lisinopril', 'Statins', 'Metformin', 'Beta Blockers'], index=0)
+exercise_per_week = st.number_input('🏃‍♀️Exercise per Week (Hours)', min_value=0.0, max_value=7.0, value=3.0, step=1.0)
+age = st.number_input('🎂Age', min_value=0.0, max_value=100.0, value=45.0, step=1.0)
+bmi = st.number_input('⚖️BMI', min_value=10.0, max_value=50.0, value=29.8, step=0.1)
+liver_function = st.number_input('🧪Liver Function', min_value=0.0, max_value=100.0, value=6.3, step=0.1)
+blood_sugar = st.number_input('🩸Blood Sugar Level', min_value=50.0, max_value=200.0, value=90.5, step=0.1)
+smoker = st.selectbox('🚬Smoker', ['No', 'Yes'], index=0)
+diabetes = st.selectbox('🍬Diabetes', ['No', 'Yes'], index=0)
+diagnosis = st.selectbox('🩺Diagnosis', ['Liver Disease', 'Healthy', 'Kidney Disease', 'Heart Disease', 'Diabetes', 'Hypertension'], index=0)
+hospital_stay_days = st.number_input('🏥Hospital Stay Days', min_value=0.0, max_value=100.0, value=3.0, step=1.0)
+hospital_visits = st.number_input('📅Hospital Visits', min_value=0.0, max_value=100.0, value=4.0, step=1.0)
 
 # Convert categorical values to numerical values
 # Map Medication to an integer value
@@ -64,15 +95,16 @@ input_data = pd.DataFrame([[
 ]], columns=columns)
 
 # When the 'Predict Treatment Outcome' button is clicked
-if st.button('Predict Treatment Outcome'):
+if st.button('🎯 Predict Treatment Outcome'):
     # Make the prediction using the model
     prediction = loaded_model.predict(input_data)
 
     outcome_mapping = {
-        0: 'failure ',
-        1: 'improvement ',
-        2: 'recovered '
+        0: '❌ Failure ',
+        1: '⚠️ Improvement ',
+        2: '✅ Recovered '
     }
 
     # Display the result
     st.write(f'Predicted Treatment Outcome: {outcome_mapping[prediction[0]]}')
+    
