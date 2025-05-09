@@ -1,6 +1,6 @@
 import mlflow
 import pandas as pd
-
+import joblib
 
 data = [
   [
@@ -19,8 +19,9 @@ data = [
   ]
 ]
 
-logged_model = 'runs:/e2b2ddd9b9694e9faf2cc30f089a544a/DecisionTreeClassifier/with-class-weights'
-loaded_model = mlflow.pyfunc.load_model(logged_model)
+#logged_model = 'runs:/24ddb137024c4ed6aa653c10096afb22/DecisionTreeClassifier/with-SMOTE'
+#loaded_model = mlflow.pyfunc.load_model(logged_model)
+loaded_model = joblib.load("model.pkl")
 
 columns = [
     'mental_health_score', 'medication', 'exercise_per_week', 'age', 'bmi',

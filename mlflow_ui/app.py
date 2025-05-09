@@ -2,19 +2,19 @@
 import streamlit as st
 import mlflow
 import pandas as pd
-
 import joblib
 
 # Load the model from MLflow
-logged_model = 'runs:/e2b2ddd9b9694e9faf2cc30f089a544a/DecisionTreeClassifier/with-class-weights'
-loaded_model = mlflow.pyfunc.load_model(logged_model)
+#logged_model = 'runs:/24ddb137024c4ed6aa653c10096afb22/DecisionTreeClassifier/with-SMOTE'
+#loaded_model = mlflow.pyfunc.load_model(logged_model)
+loaded_model = joblib.load("model.pkl")
+#joblib.dump(loaded_model, "model.pkl")
 
 # Define the required columns for the input data
 columns = ['mental_health_score','exercise_per_week','age','bmi','liver_function','blood_sugar','hospital_stay_days','hospital_visits','medication','smoker','diabetes','diagnosis']
 
 # User interface setup
 st.title("💊 Treatment Outcome Prediction")
-
 # Sidebar ABOUT the app
 st.sidebar.title("ℹ️ About")
 st.sidebar.markdown("""
@@ -24,6 +24,10 @@ This app uses a machine learning model to predict the outcome of a treatment bas
 **-Technique**: SMOTE for class balancing  
 **-Platform**: Streamlit + MLflow  
 """)
+# Sidebar - Add logo or image
+st.sidebar.markdown('<div style="text-align:center; margin-top: 20px;">', unsafe_allow_html=True)
+st.sidebar.image("photo.png", width=250)  # Adjust width as needed
+st.sidebar.markdown('</div>', unsafe_allow_html=True)
 
  #CSS
 st.markdown("""
@@ -46,19 +50,27 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Add user inputs for the features
-mental_health_score = st.number_input('🧠Mental Health Score', min_value=0.0, max_value=10.0, value=4.5, step=0.1)
-medication = st.selectbox('💊Medication', ['No Drug','Lisinopril', 'Statins', 'Metformin', 'Beta Blockers'], index=0)
-exercise_per_week = st.number_input('🏃‍♀️Exercise per Week ', min_value=0.0, max_value=7.0, value=3.0, step=1.0)
-age = st.number_input('🎂Age', min_value=0.0, max_value=100.0, value=45.0, step=1.0)
-bmi = st.number_input('⚖️BMI', min_value=10.0, max_value=50.0, value=29.8, step=0.1)
-liver_function = st.number_input('🧪Liver Function', min_value=0.0, max_value=100.0, value=6.3, step=0.1)
-blood_sugar = st.number_input('🩸Blood Sugar Level', min_value=50.0, max_value=200.0, value=90.5, step=0.1)
-smoker = st.selectbox('🚬Smoker', ['No', 'Yes'], index=0)
-diabetes = st.selectbox('🍬Diabetes', ['No', 'Yes'], index=0)
-diagnosis = st.selectbox('🩺Diagnosis', ['Liver Disease', 'Healthy', 'Kidney Disease', 'Heart Disease', 'Diabetes', 'Hypertension'], index=0)
-hospital_stay_days = st.number_input('🏥Hospital Stay Days', min_value=0.0, max_value=100.0, value=3.0, step=1.0)
-hospital_visits = st.number_input('📅Hospital Visits', min_value=0.0, max_value=100.0, value=4.0, step=1.0)
+# Organizing input fields in columns
+col1, col2, col3 = st.columns(3)
 
+with col1:
+    age = st.number_input('🎂Age', min_value=0.0, max_value=100.0, value=45.0, step=1.0)
+    bmi = st.number_input('⚖️BMI', min_value=10.0, max_value=50.0, value=29.8, step=0.1)
+    blood_sugar = st.number_input('🩸Blood Sugar Level', min_value=50.0, max_value=200.0, value=90.5, step=0.1)
+    hospital_stay_days = st.number_input('🏥Hospital Stay Days', min_value=0.0, max_value=100.0, value=3.0, step=1.0)
+
+with col2:
+    mental_health_score = st.number_input('🧠Mental Health Score', min_value=0.0, max_value=10.0, value=4.5, step=0.1)
+    liver_function = st.number_input('🧪Liver Function', min_value=0.0, max_value=100.0, value=6.3, step=0.1)
+    exercise_per_week = st.number_input('🏃‍♀️Exercise per Week ', min_value=0.0, max_value=7.0, value=3.0, step=1.0)
+    hospital_visits = st.number_input('📅Hospital Visits', min_value=0.0, max_value=100.0, value=4.0, step=1.0)
+
+with col3:
+    medication = st.selectbox('💊Medication', ['No Drug','Lisinopril', 'Statins', 'Metformin', 'Beta Blockers'], index=0)
+    diagnosis = st.selectbox('🩺Diagnosis', ['Liver Disease', 'Healthy', 'Kidney Disease', 'Heart Disease', 'Diabetes', 'Hypertension'], index=0)
+    diabetes = st.selectbox('🍬Diabetes', ['No', 'Yes'], index=0)
+    smoker = st.selectbox('🚬Smoker', ['No', 'Yes'], index=0)
+    
 # Convert categorical values to numerical values
 # Map Medication to an integer value
 medication_mapping = {
